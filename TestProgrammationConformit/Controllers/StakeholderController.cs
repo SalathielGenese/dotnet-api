@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using TestProgrammationConformit.Domains.Models;
 using TestProgrammationConformit.Infrastructures;
 
@@ -12,26 +13,31 @@ namespace TestProgrammationConformit.Controllers
     {
         public StakeholderController(ConformitContext conformitContext)
         {
+            StakeholdersDbSet = conformitContext.Stakeholders;
             ConformitContext = conformitContext;
         }
 
+        private DbSet<Stakeholder> StakeholdersDbSet { get; }
         private ConformitContext ConformitContext { get; }
 
         [HttpGet]
-        public IEnumerable<Stakeholder> Index() => ConformitContext.Stakeholders.ToList();
+        public ActionResult<IEnumerable<Stakeholder>> Index() => Ok(StakeholdersDbSet.ToList());
 
-        // TODO: Handle System.Linq.ThrowHelper.ThrowNoElementsException() => HTTP 404
         [HttpGet("{id:int}")]
-        public Stakeholder Details([FromRoute] int id) => ConformitContext.Stakeholders.FirstOrDefault(_ => _.Id == id);
+        public ActionResult<Stakeholder> Details([FromRoute] int id)
+        {
+            var firstOrDefault = StakeholdersDbSet.FirstOrDefault(_ => _.Id == id);
+
+            return null == firstOrDefault ? NotFound() : Ok(firstOrDefault);
+        }
 
         [HttpPost]
-        public Stakeholder Create([FromBody] Stakeholder stakeholder)
+        public ActionResult<Stakeholder> Create([FromBody] Stakeholder stakeholder)
         {
-            var stakeholderEntry = ConformitContext.Stakeholders.Add(stakeholder);
-            
+            stakeholder = StakeholdersDbSet.Add(stakeholder).Entity;
             ConformitContext.SaveChanges();
-            
-            return stakeholderEntry.Entity;
+
+            return CreatedAtAction(nameof(Details), new {id = stakeholder.Id}, stakeholder);
         }
     }
 }
