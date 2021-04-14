@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TestProgrammationConformit.Domains.Models;
 
 namespace TestProgrammationConformit.Infrastructures
 {
@@ -8,6 +9,10 @@ namespace TestProgrammationConformit.Infrastructures
         {
             Env = env;
         }
+
+        public DbSet<Event> Events { get; set; }
+        public DbSet<Comment> Comments { get; set; }
+        public DbSet<Stakeholder> Stakeholders { get; set; }
 
         private Env Env { get; }
 
