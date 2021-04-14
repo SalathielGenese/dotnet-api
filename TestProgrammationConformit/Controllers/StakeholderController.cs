@@ -22,6 +22,16 @@ namespace TestProgrammationConformit.Controllers
 
         // TODO: Handle System.Linq.ThrowHelper.ThrowNoElementsException() => HTTP 404
         [HttpGet("{id:int}")]
-        public Stakeholder Details(int id) => ConformitContext.Stakeholders.FirstOrDefault(_ => _.Id == id);
+        public Stakeholder Details([FromRoute] int id) => ConformitContext.Stakeholders.FirstOrDefault(_ => _.Id == id);
+
+        [HttpPost]
+        public Stakeholder Create([FromBody] Stakeholder stakeholder)
+        {
+            var stakeholderEntry = ConformitContext.Stakeholders.Add(stakeholder);
+            
+            ConformitContext.SaveChanges();
+            
+            return stakeholderEntry.Entity;
+        }
     }
 }
