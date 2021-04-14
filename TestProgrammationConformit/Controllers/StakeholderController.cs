@@ -58,5 +58,21 @@ namespace TestProgrammationConformit.Controllers
 
             return Ok(stakeholder);
         }
+
+        [HttpDelete("{id:int}")]
+        public ActionResult<Stakeholder> Delete([FromRoute] int id)
+        {
+            var stakeholder = StakeholdersDbSet.FirstOrDefault(_ => _.Id == id);
+
+            if (null == stakeholder)
+            {
+                return NotFound();
+            }
+
+            StakeholdersDbSet.Remove(stakeholder);
+            ConformitContext.SaveChanges();
+
+            return NoContent();
+        }
     }
 }
