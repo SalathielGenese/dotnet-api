@@ -18,7 +18,10 @@ namespace TestProgrammationConformit.Controllers
         private ConformitContext ConformitContext { get; }
 
         [HttpGet]
-        public IEnumerable<Stakeholder> Index() =>
-            ConformitContext.Stakeholders.ToList();
+        public IEnumerable<Stakeholder> Index() => ConformitContext.Stakeholders.ToList();
+
+        // TODO: Handle System.Linq.ThrowHelper.ThrowNoElementsException() => HTTP 404
+        [HttpGet("{id:int}")]
+        public Stakeholder Details(int id) => ConformitContext.Stakeholders.FirstOrDefault(_ => _.Id == id);
     }
 }
