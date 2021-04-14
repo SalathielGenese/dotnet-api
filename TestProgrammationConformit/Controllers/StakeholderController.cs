@@ -39,5 +39,24 @@ namespace TestProgrammationConformit.Controllers
 
             return CreatedAtAction(nameof(Details), new {id = stakeholder.Id}, stakeholder);
         }
+
+        [HttpPut("{id:int}")]
+        public ActionResult<Stakeholder> Update(
+            [FromBody] Stakeholder stakeholder,
+            [FromRoute] int id)
+        {
+            var firstOrDefault = StakeholdersDbSet.FirstOrDefault(_ => _.Id == id);
+
+            if (null == firstOrDefault)
+            {
+                return NotFound();
+            }
+
+            firstOrDefault.Name = stakeholder.Name;
+            stakeholder = StakeholdersDbSet.Update(firstOrDefault).Entity;
+            ConformitContext.SaveChanges();
+
+            return Ok(stakeholder);
+        }
     }
 }
