@@ -28,6 +28,7 @@ namespace TestProgrammationConformit
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            services.AddTransient<Env>();
 
             services.AddDbContext<ConformitContext>(options =>
             {
