@@ -16,7 +16,7 @@ namespace TestProgrammationConformitTest.Domains.Services
         }
 
         [Test]
-        public void Persist_ReturnsAStakeholder_WithNoIdStakeholder()
+        public void Persist_WithStakeholderDto_ReturnsAStakeholder()
         {
             var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
             Assert.IsInstanceOf(typeof(Stakeholder), stakeholder);
