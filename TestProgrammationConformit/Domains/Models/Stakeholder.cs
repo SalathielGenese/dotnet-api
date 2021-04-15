@@ -2,9 +2,9 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TestProgrammationConformit.Domains.Models
 {
-    public class Stakeholder
+    public class Stakeholder: Model<int>
     {
-        public int Id { get; set; }
+        public override int Id { get; set; }
         [Required] public string Name { get; set; }
     }
 }
