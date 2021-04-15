@@ -9,12 +9,12 @@ namespace TestProgrammationConformit.Controllers
     [Route("/stakeholders")]
     public class StakeholderController : Controller
     {
-        public StakeholderController(StakeholderService service)
+        public StakeholderController(IService<Stakeholder, int> service)
         {
             Service = service;
         }
 
-        private StakeholderService Service { get; }
+        private IService<Stakeholder, int> Service { get; }
 
         [HttpGet]
         public ActionResult<IEnumerable<Stakeholder>> Index() => Ok(Service.Find(2, 5));

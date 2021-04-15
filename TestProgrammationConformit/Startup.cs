@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TestProgrammationConformit.Domains.Models;
 using TestProgrammationConformit.Domains.Services;
 using TestProgrammationConformit.Infrastructures;
 
@@ -25,7 +26,7 @@ namespace TestProgrammationConformit
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<Env>();
-            services.AddScoped(provider =>
+            services.AddScoped<IService<Stakeholder, int>>(provider =>
             {
                 var context = provider.GetService<ConformitContext>();
                 return new StakeholderService(context, context?.Stakeholders, 0);
