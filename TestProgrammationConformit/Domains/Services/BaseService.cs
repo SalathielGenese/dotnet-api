@@ -68,7 +68,7 @@ namespace TestProgrammationConformit.Domains.Services
 
         public bool Delete(TId id)
         {
-            var model = DbSet.Find(new {id});
+            var model = DbSet.Find(id);
 
             if (null == model)
             {
