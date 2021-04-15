@@ -205,5 +205,20 @@ namespace TestProgrammationConformitTest.Domains.Services
                 Assert.IsTrue(stakeholders.Any(stakeholder => name.Equals(stakeholder.Name)));
             }
         }
+
+        [Test]
+        public void Delete_WithTId_ReturnsFalse_WhenTIdMatchesNotDatasetEntry()
+        {
+            var deleted = _stakeholderService.Delete(new Random().Next(0, int.MaxValue));
+            Assert.False(deleted);
+        }
+
+        [Test]
+        public void Delete_WithTId_ReturnsTrue_WhenMatchingEntryHasSuccessfullyBeenDeleted()
+        {
+            var persisted = _stakeholderService.Persist(new Stakeholder {Name = "Dataktar"});
+            var deleted = _stakeholderService.Delete(persisted!.Id);
+            Assert.True(deleted);
+        }
     }
 }
