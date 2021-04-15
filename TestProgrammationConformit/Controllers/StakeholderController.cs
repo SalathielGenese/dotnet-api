@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using TestProgrammationConformit.Domains.Models;
-using TestProgrammationConformit.Infrastructures;
+using TestProgrammationConformit.Domains.Services;
 
 namespace TestProgrammationConformit.Controllers
 {
@@ -11,68 +9,37 @@ namespace TestProgrammationConformit.Controllers
     [Route("/stakeholders")]
     public class StakeholderController : Controller
     {
-        public StakeholderController(ConformitContext conformitContext)
+        public StakeholderController(StakeholderService service)
         {
-            StakeholdersDbSet = conformitContext.Stakeholders;
-            ConformitContext = conformitContext;
+            Service = service;
         }
 
-        private DbSet<Stakeholder> StakeholdersDbSet { get; }
-        private ConformitContext ConformitContext { get; }
+        private StakeholderService Service { get; }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Stakeholder>> Index() => Ok(StakeholdersDbSet.ToList());
+        public ActionResult<IEnumerable<Stakeholder>> Index() => Ok(Service.Find(2, 5));
+
+        [HttpDelete("{id:int}")]
+        public ActionResult<Stakeholder> Delete([FromRoute] int id) => Service.Delete(id) ? NotFound() : NoContent();
+
+        [HttpPost]
+        [HttpPut("{id:int}")]
+        public ActionResult<Stakeholder> Persist([FromRoute] int id, [FromBody] Stakeholder stakeholder)
+        {
+            if (0 != id)
+            {
+                stakeholder.Id = id;
+            }
+
+            stakeholder = Service.Persist(stakeholder);
+            return null == stakeholder ? NotFound() : Ok(stakeholder);
+        }
 
         [HttpGet("{id:int}")]
         public ActionResult<Stakeholder> Details([FromRoute] int id)
         {
-            var firstOrDefault = StakeholdersDbSet.FirstOrDefault(_ => _.Id == id);
-
-            return null == firstOrDefault ? NotFound() : Ok(firstOrDefault);
-        }
-
-        [HttpPost]
-        public ActionResult<Stakeholder> Create([FromBody] Stakeholder stakeholder)
-        {
-            stakeholder = StakeholdersDbSet.Add(stakeholder).Entity;
-            ConformitContext.SaveChanges();
-
-            return CreatedAtAction(nameof(Details), new {id = stakeholder.Id}, stakeholder);
-        }
-
-        [HttpPut("{id:int}")]
-        public ActionResult<Stakeholder> Update(
-            [FromBody] Stakeholder stakeholder,
-            [FromRoute] int id)
-        {
-            var firstOrDefault = StakeholdersDbSet.FirstOrDefault(_ => _.Id == id);
-
-            if (null == firstOrDefault)
-            {
-                return NotFound();
-            }
-
-            firstOrDefault.Name = stakeholder.Name;
-            stakeholder = StakeholdersDbSet.Update(firstOrDefault).Entity;
-            ConformitContext.SaveChanges();
-
-            return Ok(stakeholder);
-        }
-
-        [HttpDelete("{id:int}")]
-        public ActionResult<Stakeholder> Delete([FromRoute] int id)
-        {
-            var stakeholder = StakeholdersDbSet.FirstOrDefault(_ => _.Id == id);
-
-            if (null == stakeholder)
-            {
-                return NotFound();
-            }
-
-            StakeholdersDbSet.Remove(stakeholder);
-            ConformitContext.SaveChanges();
-
-            return NoContent();
+            var stakeholder = Service.Find(id);
+            return null == stakeholder ? NotFound() : Ok(stakeholder);
         }
     }
 }
