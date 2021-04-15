@@ -35,14 +35,14 @@ namespace TestProgrammationConformitTest.Domains.Services
         {
             var name = "Shaban";
             var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = name});
-            Assert.AreEqual(stakeholder?.Name, name);
+            Assert.AreEqual(name, stakeholder?.Name);
         }
 
         [Test]
         public void Persist_WithStakeholderDto_ReturnsAStakeholderWithNonNullId()
         {
             var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
-            Assert.AreNotEqual(stakeholder?.Id, 0);
+            Assert.AreNotEqual(0, stakeholder?.Id);
         }
     }
 }
