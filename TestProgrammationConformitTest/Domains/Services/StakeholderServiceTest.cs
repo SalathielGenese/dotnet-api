@@ -106,7 +106,7 @@ namespace TestProgrammationConformitTest.Domains.Services
         public void Persist_WithStakeholderHavingUnknownId_ReturnsNull()
         {
             var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
-            var id = 9835;
+            var id = new Random().Next(0, int.MaxValue);
 
             stakeholder = _stakeholderService.Persist(new Stakeholder {Id = id, Name = stakeholder!.Name});
             Assert.AreEqual(null, stakeholder);
