@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProgrammationConformit"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{07C10309-AC43-4E30-A245-6DB6E88DCCAF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProgrammationConformitTest", "TestProgrammationConformitTest\TestProgrammationConformitTest.csproj", "{52CCDBD0-F831-4CFE-B44E-A9229FFEE543}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{07C10309-AC43-4E30-A245-6DB6E88DCCAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{07C10309-AC43-4E30-A245-6DB6E88DCCAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{07C10309-AC43-4E30-A245-6DB6E88DCCAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52CCDBD0-F831-4CFE-B44E-A9229FFEE543}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52CCDBD0-F831-4CFE-B44E-A9229FFEE543}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52CCDBD0-F831-4CFE-B44E-A9229FFEE543}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52CCDBD0-F831-4CFE-B44E-A9229FFEE543}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
