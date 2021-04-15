@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
 using TestProgrammationConformit.Domains.Models;
@@ -140,6 +141,69 @@ namespace TestProgrammationConformitTest.Domains.Services
             var persisted = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
             var stakeholder = _stakeholderService.Find(persisted!.Id);
             Assert.AreEqual(persisted.Name, stakeholder!.Name);
+        }
+
+        [Test]
+        public void Find_WithPageAndSize_ReturnsEmptyEnumerable_WhenTheDatasetIsEmpty()
+        {
+            var stakeholders = _stakeholderService.Find(1, 10);
+            Assert.IsEmpty(stakeholders);
+        }
+
+        [Test]
+        public void Find_WithPageAndSize_ReturnsEmptyEnumerable_WhenPageIsZeroAndSizeIsZero()
+        {
+            _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
+            var stakeholders = _stakeholderService.Find(0, 0);
+            Assert.IsEmpty(stakeholders);
+        }
+
+        [Test]
+        public void Find_WithPageAndSize_ReturnsAtMostSizeEnumerable()
+        {
+            _stakeholderService.Persist(new Stakeholder {Name = "Irban"});
+            _stakeholderService.Persist(new Stakeholder {Name = "Harban"});
+            _stakeholderService.Persist(new Stakeholder {Name = "Sokoban"});
+
+            var stakeholders = _stakeholderService.Find(1, 2);
+            Assert.AreEqual(2, stakeholders.Count());
+
+            stakeholders = _stakeholderService.Find(2, 2);
+            Assert.AreEqual(1, stakeholders.Count());
+        }
+
+        [Test]
+        public void Find_WithPageAndSize_CanBeUsedToIterateOverTheCompleteDataset()
+        {
+            var names = new HashSet<string>(new[] {"Kublai", "Khan", "Ozenu", "Mephisthos"});
+            List<Stakeholder> stakeholders = new List<Stakeholder>();
+            var ids = new HashSet<int>();
+            int page = 1, count = 0;
+
+            foreach (var name in names)
+            {
+                _stakeholderService.Persist(new Stakeholder {Name = name});
+            }
+
+            do
+            {
+                var result = _stakeholderService.Find(page++, 2).ToList();
+                count = result.Count;
+
+                foreach (var stakeholder in result)
+                {
+                    stakeholders.Add(stakeholder);
+                    ids.Add(stakeholder.Id);
+                }
+            } while (0 < count);
+
+            Assert.AreEqual(names.Count, ids.Count);
+            Assert.AreEqual(names.Count, stakeholders.Count);
+
+            foreach (var name in names)
+            {
+                Assert.IsTrue(stakeholders.Any(stakeholder => name.Equals(stakeholder.Name)));
+            }
         }
     }
 }
