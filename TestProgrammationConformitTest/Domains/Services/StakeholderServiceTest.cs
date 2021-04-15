@@ -9,7 +9,7 @@ namespace TestProgrammationConformitTest.Domains.Services
 {
     public class StakeholderServiceTest : BaseServiceTest
     {
-        private StakeholderService _stakeholderService;
+        private IService<Stakeholder, int> _stakeholderService;
 
         [SetUp]
         public new void Setup()
