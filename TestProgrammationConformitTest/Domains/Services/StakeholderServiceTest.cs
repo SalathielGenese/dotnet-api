@@ -44,5 +44,70 @@ namespace TestProgrammationConformitTest.Domains.Services
             var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
             Assert.AreNotEqual(0, stakeholder?.Id);
         }
+
+        [Test]
+        public void Persist_WithStakeholder_ReturnsAStakeholder()
+        {
+            var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
+            stakeholder = _stakeholderService.Persist(stakeholder!);
+            Assert.IsInstanceOf(typeof(Stakeholder), stakeholder);
+        }
+
+        [Test]
+        public void Persist_WithStakeholder_RecordNoNewStakeholder()
+        {
+            var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
+            Assert.AreEqual(1, ConformitContext.Stakeholders.Count());
+            _stakeholderService.Persist(stakeholder!);
+            Assert.AreEqual(1, ConformitContext.Stakeholders.Count());
+        }
+
+        [Test]
+        public void Persist_WithStakeholder_ReturnsAStakeholderWithSameName()
+        {
+            var name = "Shaban";
+            var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = name});
+            stakeholder = _stakeholderService.Persist(stakeholder!);
+            Assert.AreEqual(name, stakeholder?.Name);
+        }
+
+        [Test]
+        public void Persist_WithStakeholder_ReturnsAStakeholderWithNonNullId()
+        {
+            var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
+            stakeholder = _stakeholderService.Persist(stakeholder!);
+            Assert.AreNotEqual(0, stakeholder?.Id);
+        }
+
+        [Test]
+        public void Persist_WithStakeholder_ReturnsAStakeholderWithSameId()
+        {
+            var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
+            var id = stakeholder!.Id;
+            stakeholder = _stakeholderService.Persist(stakeholder!);
+            Assert.AreEqual(id, stakeholder?.Id);
+        }
+
+        [Test]
+        public void Persist_WithStakeholderHavingUpdatedName_ReturnsAStakeholderWithUpdatedName()
+        {
+            var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
+            var id = stakeholder!.Id;
+            var name = "Ultron";
+
+            stakeholder.Name = name;
+            stakeholder = _stakeholderService.Persist(stakeholder!);
+            Assert.AreEqual(name, stakeholder?.Name);
+        }
+
+        [Test]
+        public void Persist_WithStakeholderHavingUnknownId_ReturnsNull()
+        {
+            var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
+            var id = 9835;
+
+            stakeholder = _stakeholderService.Persist(new Stakeholder {Id = id, Name = stakeholder!.Name});
+            Assert.AreEqual(null, stakeholder);
+        }
     }
 }
