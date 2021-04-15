@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using TestProgrammationConformit.Domains.Services;
 using TestProgrammationConformit.Infrastructures;
 
 namespace TestProgrammationConformit
@@ -24,6 +25,11 @@ namespace TestProgrammationConformit
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<Env>();
+            services.AddScoped(provider =>
+            {
+                var context = provider.GetService<ConformitContext>();
+                return new StakeholderService(context, context?.Stakeholders, 0);
+            });
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.IgnoreNullValues = true;
@@ -50,13 +56,8 @@ namespace TestProgrammationConformit
             }
 
             app.UseRouting();
-
             app.UseAuthorization();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
+            app.UseEndpoints(endpoints => endpoints.MapControllers());
         }
     }
 }
