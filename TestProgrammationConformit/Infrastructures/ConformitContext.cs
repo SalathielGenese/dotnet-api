@@ -18,7 +18,11 @@ namespace TestProgrammationConformit.Infrastructures
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseNpgsql(Env.PostgresConnectionString);
+            if (!string.IsNullOrEmpty(Env.PostgresConnectionString))
+            {
+                optionsBuilder.UseNpgsql();
+            }
+
             base.OnConfiguring(optionsBuilder);
         }
     }
