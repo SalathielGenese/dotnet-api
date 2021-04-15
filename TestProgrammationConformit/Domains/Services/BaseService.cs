@@ -26,7 +26,7 @@ namespace TestProgrammationConformit.Domains.Services
 
         public TModel? Persist(TModel entity)
         {
-            TModel? model = null;
+            TModel? model;
 
             if (Identity!.Equals(entity.Id))
             {
