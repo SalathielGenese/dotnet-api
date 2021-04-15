@@ -12,7 +12,6 @@ namespace TestProgrammationConformitTest.Domains.Services
         [SetUp]
         public new void Setup()
         {
-            base.Setup();
             _stakeholderService = new StakeholderService(ConformitContext, ConformitContext.Stakeholders, 0);
         }
 
@@ -28,7 +27,7 @@ namespace TestProgrammationConformitTest.Domains.Services
         {
             _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
             var count = ConformitContext.Stakeholders.Count();
-            Assert.AreEqual(count, 1);
+            Assert.AreEqual(1, count);
         }
 
         [Test]

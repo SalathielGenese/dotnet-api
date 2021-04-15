@@ -1,4 +1,6 @@
+using System;
 using Microsoft.EntityFrameworkCore;
+using NUnit.Framework;
 using TestProgrammationConformit.Infrastructures;
 
 namespace TestProgrammationConformitTest.Domains.Services
@@ -7,13 +9,20 @@ namespace TestProgrammationConformitTest.Domains.Services
     {
         protected ConformitContext ConformitContext;
 
+        [SetUp]
         protected void Setup()
         {
-            var defaultDatabaseName = typeof(ConformitContext).FullName;
-            var databaseName = null == defaultDatabaseName ? "Test" : $"{defaultDatabaseName}-Test";
-            var options = new DbContextOptionsBuilder<ConformitContext>().UseInMemoryDatabase(databaseName).Options;
+            var contextBuilder = new DbContextOptionsBuilder<ConformitContext>()
+                .UseInMemoryDatabase(Guid.NewGuid().ToString());
+            var options = contextBuilder.Options;
 
             ConformitContext = new ConformitContext(options, new Env());
+        }
+
+        [TearDown]
+        protected void TearDown()
+        {
+            ConformitContext?.Dispose();
         }
     }
 }
