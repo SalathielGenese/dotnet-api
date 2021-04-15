@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using TestProgrammationConformit.Domains.Models;
 using TestProgrammationConformit.Domains.Services;
+using TestProgrammationConformit.Infrastructures.Http;
 
 namespace TestProgrammationConformit.Controllers
 {
@@ -18,7 +19,10 @@ namespace TestProgrammationConformit.Controllers
 
 
         [HttpGet]
-        public ActionResult<IEnumerable<TModel>> Index() => Ok(Service.Find(2, 5));
+        public ActionResult<IEnumerable<TModel>> Index([FromQuery] Pageable pageable)
+        {
+            return Ok(Service.Find(pageable.Page, pageable.Size));
+        }
 
         [HttpDelete("{id}")]
         public ActionResult<TModel> Delete([FromRoute] TId id) => Service.Delete(id) ? NoContent() : NotFound();
