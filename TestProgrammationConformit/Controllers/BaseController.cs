@@ -21,7 +21,7 @@ namespace TestProgrammationConformit.Controllers
         public ActionResult<IEnumerable<TModel>> Index() => Ok(Service.Find(2, 5));
 
         [HttpDelete("{id}")]
-        public ActionResult<TModel> Delete([FromRoute] TId id) => Service.Delete(id) ? NotFound() : NoContent();
+        public ActionResult<TModel> Delete([FromRoute] TId id) => Service.Delete(id) ? NoContent() : NotFound();
 
         [HttpPost]
         [HttpPut("{id}")]
