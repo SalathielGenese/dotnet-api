@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using NUnit.Framework;
 using TestProgrammationConformit.Domains.Models;
@@ -108,6 +109,37 @@ namespace TestProgrammationConformitTest.Domains.Services
 
             stakeholder = _stakeholderService.Persist(new Stakeholder {Id = id, Name = stakeholder!.Name});
             Assert.AreEqual(null, stakeholder);
+        }
+
+        [Test]
+        public void Find_WithTId_ReturnsNullIfNoneWithMatchingId()
+        {
+            var stakeholder = _stakeholderService.Find(new Random().Next(1, int.MaxValue));
+            Assert.IsNull(stakeholder);
+        }
+
+        [Test]
+        public void Find_WithTId_ReturnsAStakeholder()
+        {
+            var persisted = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
+            var stakeholder = _stakeholderService.Find(persisted!.Id);
+            Assert.IsInstanceOf<Stakeholder>(stakeholder);
+        }
+
+        [Test]
+        public void FindT_WithId_ReturnsAStakeholderWithSameId()
+        {
+            var persisted = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
+            var stakeholder = _stakeholderService.Find(persisted!.Id);
+            Assert.AreEqual(persisted.Id, stakeholder!.Id);
+        }
+
+        [Test]
+        public void Find_WithTId_ReturnsAStakeholderWithPersistedName()
+        {
+            var persisted = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
+            var stakeholder = _stakeholderService.Find(persisted!.Id);
+            Assert.AreEqual(persisted.Name, stakeholder!.Name);
         }
     }
 }
