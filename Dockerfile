@@ -1,21 +1,27 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
-FROM mcr.microsoft.com/dotnet/core/aspnet:5.0-buster-slim AS base
-WORKDIR /app
+FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine AS base
+WORKDIR /opt/app
 EXPOSE 80
 
-FROM mcr.microsoft.com/dotnet/core/sdk:5.0-buster AS build
-WORKDIR /src
-COPY ["TestProgrammationConformit/TestProgrammationConformit.csproj", "TestProgrammationConformit/"]
-RUN dotnet restore "TestProgrammationConformit/TestProgrammationConformit.csproj"
-COPY . .
-WORKDIR "/src/TestProgrammationConformit"
-RUN dotnet build "TestProgrammationConformit.csproj" -c Release -o /app/build
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS test
+WORKDIR /opt/app/TestProgrammationConformitTest
+COPY TestProgrammationConformitTest/TestProgrammationConformitTest.csproj .
+RUN dotnet restore
+COPY . ..
+RUN dotnet test --verbosity minimal
+
+FROM mcr.microsoft.com/dotnet/sdk:5.0-alpine AS build
+WORKDIR /opt/app/TestProgrammationConformit
+COPY TestProgrammationConformit/TestProgrammationConformit.csproj .
+RUN dotnet restore TestProgrammationConformit.csproj
+COPY TestProgrammationConformit .
+RUN dotnet build -c Release -o /opt/build
 
 FROM build AS publish
-RUN dotnet publish "TestProgrammationConformit.csproj" -c Release -o /app/publish
+RUN dotnet publish -c Release -o /opt/publish
 
 FROM base AS final
-WORKDIR /app
-COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "TestProgrammationConformit.dll"]
+WORKDIR /opt/app
+COPY --from=publish /opt/publish .
