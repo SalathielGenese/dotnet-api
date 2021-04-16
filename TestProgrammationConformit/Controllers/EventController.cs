@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
+using TestProgrammationConformit.Domains.Models;
+using TestProgrammationConformit.Domains.Services;
 
 namespace TestProgrammationConformit.Controllers
 {
     [ApiController]
     [Route("/events")]
-    public class EventController : Controller
+    public class EventController : BaseController<Event, int>
     {
-        [HttpGet]
-        public IActionResult Index()
+        public EventController(IService<Event, int> service, int identity) : base(service, identity)
         {
-            return Ok(new string[] {"event-001"});
         }
     }
 }

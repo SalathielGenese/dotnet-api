@@ -1,15 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
+using TestProgrammationConformit.Domains.Models;
+using TestProgrammationConformit.Domains.Services;
 
 namespace TestProgrammationConformit.Controllers
 {
     [ApiController]
     [Route("/comments")]
-    public class CommentController : Controller
+    public class CommentController : BaseController<Comment, int>
     {
-        [HttpGet]
-        public IActionResult Index()
+        public CommentController(IService<Comment, int> service, int identity) : base(service, identity)
         {
-            return Ok(new string[] {"comment-001-jfk"});
         }
     }
 }
