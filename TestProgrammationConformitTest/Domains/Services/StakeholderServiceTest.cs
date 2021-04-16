@@ -49,7 +49,7 @@ namespace TestProgrammationConformitTest.Domains.Services
         }
 
         [Test]
-        public void Persist_WithStakeholderDtoHavingUsedName_ReturnsXXX()
+        public void Persist_WithStakeholderDtoHavingUsedName_ThrowsUniqueConstraint()
         {
             var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Mihahel"});
 
