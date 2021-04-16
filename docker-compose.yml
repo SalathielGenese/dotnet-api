@@ -3,6 +3,9 @@ version: '3.4'
 services:
   postgres.data:
     image: postgres:alpine
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
+      POSTGRES_DB: ${DB_NAME:-ConformitDb}
 
   testprogrammationconformit:
     build: .
@@ -10,4 +13,7 @@ services:
       - 80:80
     image: ${DOCKER_REGISTRY-}testprogrammationconformit
     environment:
-      - ConnectionStrings__ConformitDb=Host=postgres.data;Port=55432;Database=ConformitDb;Username=postgres;Password=${POSTGRES_PASSWORD:-admin}
+      - ConnectionStrings__ConformitDb=Host=${DB_HOST:-postgres.data};Port=${DB_PORT:-5432};Database=${DB_NAME:-ConformitDb};Username=postgres;Password=${POSTGRES_PASSWORD:-admin}
+      - DB_HOST_PORT=${DB_HOST:-postgres.data}:${DB_PORT:-5432}
+    depends_on:
+      - postgres.data

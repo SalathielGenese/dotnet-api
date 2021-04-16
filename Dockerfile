@@ -1,6 +1,7 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 FROM mcr.microsoft.com/dotnet/aspnet:5.0-alpine AS base
+RUN apk add --no-cache bash
 WORKDIR /opt/app
 EXPOSE 80
 
@@ -22,6 +23,8 @@ FROM build AS publish
 RUN dotnet publish -c Release -o /opt/publish
 
 FROM base AS final
-ENTRYPOINT ["dotnet", "TestProgrammationConformit.dll"]
+CMD ["dotnet", "TestProgrammationConformit.dll"]
+COPY entrypoint.sh wait-for-it.sh /opt/app/
+ENTRYPOINT ["sh", "entrypoint.sh"]
 WORKDIR /opt/app
 COPY --from=publish /opt/publish .
