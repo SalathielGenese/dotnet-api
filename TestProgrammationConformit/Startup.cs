@@ -26,6 +26,11 @@ namespace TestProgrammationConformit
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<Env>();
+            services.AddScoped<IService<Event, int>>(provider =>
+            {
+                var context = provider.GetService<ConformitContext>();
+                return new EventService(context, context?.Events, 0);
+            });
             services.AddScoped<IService<Stakeholder, int>>(provider =>
             {
                 var context = provider.GetService<ConformitContext>();
