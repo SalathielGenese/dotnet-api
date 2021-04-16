@@ -41,10 +41,7 @@ namespace TestProgrammationConformit
             services.AddDbContext<ConformitContext>(options =>
             {
                 options.UseNpgsql(Configuration.GetConnectionString("ConformitDb"),
-                    npgsqlOptionsAction: sqlOptions =>
-                    {
-                        sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name);
-                    });
+                    sqlOptions => sqlOptions.MigrationsAssembly(typeof(Startup).GetTypeInfo().Assembly.GetName().Name));
             });
         }
 
