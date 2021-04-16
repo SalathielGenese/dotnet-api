@@ -31,6 +31,11 @@ namespace TestProgrammationConformit
                 var context = provider.GetService<ConformitContext>();
                 return new EventService(context, context?.Events, 0);
             });
+            services.AddScoped<IService<Comment, int>>(provider =>
+            {
+                var context = provider.GetService<ConformitContext>();
+                return new CommentService(context, context?.Comments, 0);
+            });
             services.AddScoped<IService<Stakeholder, int>>(provider =>
             {
                 var context = provider.GetService<ConformitContext>();
