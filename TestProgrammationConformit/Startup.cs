@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using TestProgrammationConformit.Domains.Models;
 using TestProgrammationConformit.Domains.Services;
 using TestProgrammationConformit.Infrastructures;
@@ -41,6 +42,8 @@ namespace TestProgrammationConformit
                 var context = provider.GetService<ConformitContext>();
                 return new StakeholderService(context, context?.Stakeholders, 0);
             });
+            services.AddSwaggerGen(options =>
+                options.SwaggerDoc("v0.0.1", new OpenApiInfo{ Title = "Test Programmation Conformit", Version = "v0.0.1"}));
             services.AddControllers().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.IgnoreNullValues = true;
@@ -63,6 +66,9 @@ namespace TestProgrammationConformit
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUI(swaggerUiOptions =>
+                swaggerUiOptions.SwaggerEndpoint("/swagger/v0.0.1/swagger.json", "Test Programmation Conformit"));
             app.UseRouting();
             app.UseAuthorization();
             app.UseEndpoints(endpoints => endpoints.MapControllers());
