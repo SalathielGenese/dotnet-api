@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using TestProgrammationConformit.Domains.Models;
 using TestProgrammationConformit.Domains.Services;
@@ -45,6 +46,15 @@ namespace TestProgrammationConformitTest.Domains.Services
         {
             var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
             Assert.AreNotEqual(0, stakeholder?.Id);
+        }
+
+        [Test]
+        public void Persist_WithStakeholderDtoHavingUsedName_ReturnsXXX()
+        {
+            var stakeholder = _stakeholderService.Persist(new Stakeholder {Name = "Mihahel"});
+
+            Assert.Throws(Is.InstanceOf<DbUpdateException>(),
+                delegate { _stakeholderService.Persist(new Stakeholder {Name = stakeholder!.Name}); });
         }
 
         [Test]
