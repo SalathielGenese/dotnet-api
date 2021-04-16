@@ -129,6 +129,16 @@ namespace TestProgrammationConformitTest.Domains.Services
         }
 
         [Test]
+        public void Persist_WithStakeholderHavingUsedName_ThrowsUniqueConstraint()
+        {
+            var stakeholder1 = _stakeholderService.Persist(new Stakeholder {Name = Guid.NewGuid().ToString()});
+            var stakeholder2 = _stakeholderService.Persist(new Stakeholder {Name = Guid.NewGuid().ToString()});
+
+                stakeholder2!.Name = stakeholder1?.Name;
+            Assert.Throws(Is.InstanceOf<DbUpdateException>(), delegate { _stakeholderService.Persist(stakeholder2); });
+        }
+
+        [Test]
         public void Find_WithTId_ReturnsNullIfNoneWithMatchingId()
         {
             var stakeholder = _stakeholderService.Find(new Random().Next(1, int.MaxValue));
