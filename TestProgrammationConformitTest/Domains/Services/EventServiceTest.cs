@@ -333,7 +333,7 @@ namespace TestProgrammationConformitTest.Domains.Services
         }
 
         [Test]
-        public void Find_WithPageAndSize_ReturnsEmptyEnumerable_WhenPageIsZeroOrSizeIsZero()
+        public void Find_WithPageAndSize_ReturnsEmptyEnumerable_WhenSizeIsZero()
         {
             var stakeholderId = _stakeholderService.Persist(new Stakeholder {Name = Guid.NewGuid().ToString()})!.Id;
             _eventService.Persist(new Event
@@ -342,7 +342,7 @@ namespace TestProgrammationConformitTest.Domains.Services
                 Title = Guid.NewGuid().ToString(),
                 Description = Guid.NewGuid().ToString(),
             });
-            Assert.IsEmpty(_eventService.Find(0, 10));
+            Assert.IsEmpty(_eventService.Find(0, 0));
             Assert.IsEmpty(_eventService.Find(1, 0));
         }
 
