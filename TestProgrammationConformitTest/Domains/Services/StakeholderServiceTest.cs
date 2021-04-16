@@ -177,11 +177,11 @@ namespace TestProgrammationConformitTest.Domains.Services
         }
 
         [Test]
-        public void Find_WithPageAndSize_ReturnsEmptyEnumerable_WhenPageIsZeroAndSizeIsZero()
+        public void Find_WithPageAndSize_ReturnsEmptyEnumerable_WhenSizeIsZero()
         {
             _stakeholderService.Persist(new Stakeholder {Name = "Shaban"});
-            var stakeholders = _stakeholderService.Find(0, 0);
-            Assert.IsEmpty(stakeholders);
+            Assert.IsEmpty(_stakeholderService.Find(0, 0));
+            Assert.IsEmpty(_stakeholderService.Find(1, 0));
         }
 
         [Test]
