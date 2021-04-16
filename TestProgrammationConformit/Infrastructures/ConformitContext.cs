@@ -1,4 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using TestProgrammationConformit.Domains.Models;
 
 namespace TestProgrammationConformit.Infrastructures
@@ -24,6 +28,49 @@ namespace TestProgrammationConformit.Infrastructures
             }
 
             base.OnConfiguring(optionsBuilder);
+        }
+
+        public override int SaveChanges()
+        {
+            ApplyTracking();
+            return base.SaveChanges();
+        }
+
+        public override int SaveChanges(bool acceptAllChangesOnSuccess)
+        {
+            ApplyTracking();
+            return base.SaveChanges(acceptAllChangesOnSuccess);
+        }
+
+        public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        {
+            ApplyTracking();
+            return base.SaveChangesAsync(cancellationToken);
+        }
+
+        public override Task<int> SaveChangesAsync(bool acceptAllChangesOnSuccess,
+            CancellationToken cancellationToken = new CancellationToken())
+        {
+            ApplyTracking();
+            return base.SaveChangesAsync(acceptAllChangesOnSuccess, cancellationToken);
+        }
+
+        private void ApplyTracking()
+        {
+            foreach (var entry in ChangeTracker.Entries<Model<int>>().Where(entry => entry.Entity != null &&
+                entry.State switch
+                {
+                    EntityState.Modified => true,
+                    EntityState.Added => true,
+                    _ => false
+                }))
+            {
+                entry.Entity.UpdatedAt = DateTime.Now;
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedAt = DateTime.Now;
+                }
+            }
         }
     }
 }
