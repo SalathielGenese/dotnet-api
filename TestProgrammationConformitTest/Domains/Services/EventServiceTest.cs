@@ -244,7 +244,7 @@ namespace TestProgrammationConformitTest.Domains.Services
                 Title = Guid.NewGuid().ToString(),
                 Description = Guid.NewGuid().ToString(),
                 Id = new Random().Next(0, int.MaxValue),
-            })!.Id;
+            });
             Assert.AreEqual(null, @event);
         }
 
