@@ -8,6 +8,12 @@ using TestProgrammationConformit.Domains.Services;
 
 namespace TestProgrammationConformitTest.Domains.Services
 {
+    /// <summary>
+    /// StakeholderService test cases
+    /// </summary>
+    /// <remarks>
+    /// "Dto" suffixes here indicate ID-less Stakeholder
+    /// </remarks>
     public class StakeholderServiceTest : BaseServiceTest
     {
         private IService<Stakeholder, int> _stakeholderService;
