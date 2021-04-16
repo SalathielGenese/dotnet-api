@@ -2,10 +2,12 @@ version: '3.4'
 
 services:
   postgres.data:
-    image: postgres
+    image: postgres:alpine
 
   testprogrammationconformit:
+    build: .
+    ports:
+      - 5001:80
     image: ${DOCKER_REGISTRY-}testprogrammationconformit
-    build:
-      context: .
-      dockerfile: TestProgrammationConformit/Dockerfile
+    environment:
+      - ConnectionStrings__ConformitDb=Host=postgres.data;Port=55432;Database=ConformitDb;Username=postgres;Password=${POSTGRES_PASSWORD:-admin}

@@ -2,21 +2,22 @@ version: '3.4'
 
 services:
   postgres.data:
+    image: postgres:alpine
     restart: always
     environment:
-      POSTGRES_PASSWORD: "admin"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin}
     volumes:
       - postgresdata-volume:/var/lib/postgresql/data
     ports:
-      - "55432:5432"
-      
+      - 55432:5432
+
   testprogrammationconformit:
+    build: .
+    ports:
+      - 80:80
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__ConformitDb=Host=postgres.data;Port=55432;Database=ConformitDb;Username=postgres;Password=admin
-
-    ports:
-      - "5001:80"
+      - ConnectionStrings__ConformitDb=Host=postgres.data;Port=55432;Database=ConformitDb;Username=postgres;Password=${POSTGRES_PASSWORD:-admin}
 
 volumes:
   postgresdata-volume:
