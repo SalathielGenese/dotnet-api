@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using TestProgrammationConformit.Infrastructures;
@@ -9,9 +10,10 @@ using TestProgrammationConformit.Infrastructures;
 namespace TestProgrammationConformit.Migrations
 {
     [DbContext(typeof(ConformitContext))]
-    partial class ConformitContextModelSnapshot : ModelSnapshot
+    [Migration("20210416092831_TrackModelChanges")]
+    partial class TrackModelChanges
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
