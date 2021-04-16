@@ -7,7 +7,7 @@ services:
   testprogrammationconformit:
     build: .
     ports:
-      - 5001:80
+      - 80:80
     image: ${DOCKER_REGISTRY-}testprogrammationconformit
     environment:
       - ConnectionStrings__ConformitDb=Host=postgres.data;Port=55432;Database=ConformitDb;Username=postgres;Password=${POSTGRES_PASSWORD:-admin}
