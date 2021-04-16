@@ -19,7 +19,7 @@ namespace TestProgrammationConformitTest.Domains.Services
         [SetUp]
         public new void Setup()
         {
-            // TODO: Provide _eventService implementation
+            _eventService = new EventService(ConformitContext, ConformitContext.Events, 0);
             _stakeholderService = new StakeholderService(ConformitContext, ConformitContext.Stakeholders, 0);
         }
 
