@@ -264,7 +264,7 @@ namespace TestProgrammationConformitTest.Domains.Services
                 StakeholderId = stakeholderId,
                 Title = Guid.NewGuid().ToString(),
                 Description = Guid.NewGuid().ToString(),
-            })!.Id;
+            });
             Assert.IsInstanceOf<Event>(@event);
         }
 
