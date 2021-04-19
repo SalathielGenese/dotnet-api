@@ -21,7 +21,7 @@
 + Entities paranoid deletion
 + Controller sorting NOR default sorting
 + Services' implementation tests for IService<Comment, int>
-+ GraphQL, HAL, custom response wrapper, paginated API responses
++ GraphQL, HAL, custom response wrapper, pagination metadata in API responses
 + Environment variables to configure the container aren't documented
 + Controllers' unit tests for Controller<Event, int> and Controller<Comment, int>
 
